@@ -38,15 +38,15 @@ public class CharacterFloorMovement : CharacterMovement
 
     protected bool GroundWalkable(RaycastHit groundHit)
     {
-        float slopeT = Mathf.InverseLerp(0, 90, maxSlope);
-
         if (groundHit.collider != null)
         {
+            //Check slope
             Vector3 localNormal = groundHit.normal.normalized;
-            bool v = localNormal.y >= 1 - slopeT;
-            //Debug.Log("GroundWalkable: " + v + ". Normal X: " + localNormal.x);
+            float angle = Vector3.Angle(Vector3.up, localNormal);
+            bool isOnValidGround = angle < maxSlope;
+
             Debug.DrawRay(groundHit.transform.position, localNormal, Color.red);
-            return v;
+            return isOnValidGround;
         }
         else
         {
